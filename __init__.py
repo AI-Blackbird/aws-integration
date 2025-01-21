@@ -1,5 +1,5 @@
 from cat.log import log
-from core.cat.mad_hatter.tweedledum import Tweedledum
+from cat.mad_hatter.tweedledum import Tweedledum
 
 AWS_PLUGIN_PREFIX = "aws_integration"
 
