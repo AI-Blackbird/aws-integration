@@ -1,6 +1,5 @@
-from cat.mad_hatter.mad_hatter import MadHatter
-from cat.mad_hatter.decorators import tool, hook, plugin
 from cat.log import log
+from core.cat.mad_hatter.tweedledum import Tweedledum
 
 AWS_PLUGIN_PREFIX = "aws_integration"
 
@@ -48,7 +47,7 @@ class EmptyFactory(BaseFactory):
 
 def factory():
     """Create an AWS client factory from the aws_integration plugin settings."""
-    mad_hatter = MadHatter()
+    mad_hatter = Tweedledum()
     for name in mad_hatter.active_plugins:
         if name.startswith(AWS_PLUGIN_PREFIX):
             aws_plugin = mad_hatter.plugins.get(name)
