@@ -1,5 +1,6 @@
 from cat.log import log
 from cat.mad_hatter.tweedledum import Tweedledum
+from cat.db.cruds import plugins as crud_plugins
 
 AWS_PLUGIN_PREFIX = "aws_integration"
 
@@ -47,19 +48,17 @@ class EmptyFactory(BaseFactory):
 
 def factory():
     """Create an AWS client factory from the aws_integration plugin settings."""
-    mad_hatter = Tweedledum()
-    for name in mad_hatter.active_plugins:
-        if name.startswith(AWS_PLUGIN_PREFIX):
-            aws_plugin = mad_hatter.plugins.get(name)
-            if aws_plugin:
-                try:
-                    plugin_settings = aws_plugin.load_settings()
-                    aws_model = aws_plugin.settings_model()
-                    if plugin_settings and aws_model:
-                        return AWSFactory(plugin_settings, aws_model)
-                except Exception as e:
-                    log.info(f"An error occurred while creating the AWS Factory: {e}")
-                break
+    aws_plugin = Tweedledum().plugins.get(AWS_PLUGIN_PREFIX)
+    if not aws_plugin:
+        log.info("No AWS integration plugin found.")
+        return EmptyFactory()
+    aws_model = aws_plugin.load_model()
+    plugin_settings = crud_plugins.get_setting('user', AWS_PLUGIN_PREFIX)
+
+    if plugin_settings and aws_model:
+        return AWSFactory(plugin_settings, aws_model)
+
+
     log.info("No AWS integration plugin found or failed to initialize.")
     return EmptyFactory()
 
