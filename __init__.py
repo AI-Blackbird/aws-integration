@@ -75,7 +75,7 @@ class EmptyFactory(BaseFactory):
 def factory():
     """Create an AWS client factory from the aws_integration plugin settings."""
 
-    plugin_settings = crud_plugins.get_setting('user', AWS_PLUGIN_PREFIX)
+    plugin_settings = crud_plugins.get_setting('system', AWS_PLUGIN_PREFIX)
 
     if plugin_settings:
         return AWSFactory(plugin_settings)
